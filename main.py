@@ -1,12 +1,25 @@
 import sys
-def g64(x,z,h,f,X):
+def g64(x,z,h,f,X,Z,file):
     z=float(z)
     h=float(h)
     f=float(f)
     X=float(X)
     x=float(x)
-    print(x,z,h,f,X)
-    #todo
+    Z=float(Z)
+    XX=float(X)
+    while 1:
+        if (x+h)>X:
+
+            file.write(f"G00 X{X} Z{Z}\n")
+            file.write(f"G01 X{X} Z{z} F{f}\n")
+            file.write(f"G00 X{XX} Z{Z}\n")
+            break
+        file.write(f"G00 X{X-h} Z{Z}\n")
+        X=X-h
+        file.write(f"G01 X{X} Z{z} F{f}\n")
+        file.write(f"G00 X{X+2} Z{Z}\n")
+
+    print(x,z,h,f,X,Z)
 
 
 lines = []
@@ -25,7 +38,8 @@ with (open("compliedCNC.txt", 'w') as file):
             for xs in XS:
                 if xs.lower().startswith("x"):
                     X=xs.lower().replace("x","")
-                    break
+                if xs.lower().startswith("z"):
+                    Z=xs.lower().replace("z","")
 
 
         elif "G64" in line:
@@ -53,6 +67,6 @@ with (open("compliedCNC.txt", 'w') as file):
                     ok=ok+0
 
             
-            if ok<4 or ok>5:
+            if ok<4 or ok>5 and Z!=None and X!=None:
                 sys.exit("ok error")
-            g64(x,z,h,f,X)
+            g64(x,z,h,f,X,Z,file)
