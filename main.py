@@ -33,8 +33,9 @@ with open("compliedCNC.txt", "w") as file:
 
     for line in lines:
         ok = 0
-        file.write(line)
+
         if "G01" in line or "G00" in line or "G0" in line or "G1" in line:
+            file.write(line)
 
             XS = line.split(" ")
             for xs in XS:
@@ -70,3 +71,5 @@ with open("compliedCNC.txt", "w") as file:
             if ok < 4 or ok > 5 and Z != None and X != None:
                 sys.exit("ok error")
             g64(x, z, h, f, X, Z, file)
+        else:
+            file.write(line)
