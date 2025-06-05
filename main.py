@@ -32,6 +32,11 @@ with open("compliedCNC.txt", "w") as file:
     file.write("G54\n")
     for line in lines:
         ok = 0
+        while 1:
+            if "  " in line:
+                line = line.replace("  ", " ")
+            else:
+                break
         if "m03" in line.lower().strip() or "m3" in line.lower().strip():
             M3=line.strip().lower().split(" ")
 
